@@ -130,6 +130,16 @@ python main.py
 - **flow_break** – True if `newBalance != next_old`.  
 - **delta_anomaly** – True if delta is >3σ outlier for that user.  
 
+
+## Engineering Notes
+- Logs are parsed per RequestId block (START → END). 
+- Extracted fields include balances, deltas, overdrafts, mismatches, and anomalies. 
+- Overdraft detection = when newBalance < 0. 
+- Mismatch = when reported delta != computed amount. 
+- RedFlags = any overdraft crossing or mismatched delta. 
+- FlowBreaks = detected if event sequence is missing or requestId incomplete.
+- Future extensions: pivot charts, dashboards (Tableau/PowerBI), or a Jupyter notebook with time-series plots.
+
 ---
 
 ## Design Choices
@@ -146,17 +156,8 @@ python main.py
 - Add interactive web dashboard (Streamlit/Dash).  
 - Insert charts & pivot tables into Excel.  
 - Automated alerting (email/Slack) on overdrafts/mismatches.  
-- Configurable parsing rules via YAML.  
-- Unit tests for parsing and anomaly detection.  
-- Chunked parsing for very large logs.  
 
----
 
-## License
-
-MIT (or choose another license)
-
----
 
 ### Author
 **Abdus Samad Abdullah** – Data Engineer / Data Scientist
