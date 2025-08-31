@@ -59,7 +59,7 @@ mkdir reports
 docker run --rm ^
   -v "%cd%\balance-sync-logs.zip:/data.zip:ro" ^
   -v "%cd%\reports:/out" ^
-  calo-project
+  abdussamad-calo-project
 ```
 
 #### Windows PowerShell
@@ -68,7 +68,7 @@ mkdir reports
 docker run --rm `
   -v "${PWD}\balance-sync-logs.zip:/data.zip:ro" `
   -v "${PWD}\reports:/out" `
-  calo-project
+  abdussamad-calo-project
 ```
 
 #### macOS/Linux
@@ -77,7 +77,7 @@ mkdir -p reports
 docker run --rm \
   -v "$PWD/balance-sync-logs.zip:/data.zip:ro" \
   -v "$PWD/reports:/out" \
-  calo-project
+  abdussamad-calo-project
 ```
 
 Output: `./reports/calo_balance_reports.xlsx`
