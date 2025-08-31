@@ -50,14 +50,14 @@ docker build -t calo-project .
 
 ### 2) Run container
 
-Make sure you have a **folder** named `balance-sync-logs` (unzipped, containing `.gz` log files) in the repo folder.
+The project includes a file named balance-sync-logs.zip (containing the .gz log files).  
+This file will be mounted directly into the container at runtime.
 
 #### Windows CMD
 ```powershell
 mkdir reports
 docker run --rm ^
-  -e IN_DIR=/data ^
-  -v "%cd%\balance-sync-logs:/data:ro" ^
+  -v "%cd%\balance-sync-logs.zip:/data.zip:ro" ^
   -v "%cd%\reports:/out" ^
   calo-project
 ```
@@ -66,8 +66,7 @@ docker run --rm ^
 ```powershell
 mkdir reports
 docker run --rm `
-  -e IN_DIR=/data `
-  -v "${PWD}\balance-sync-logs:/data:ro" `
+  -v "${PWD}\balance-sync-logs.zip:/data.zip:ro" `
   -v "${PWD}\reports:/out" `
   calo-project
 ```
@@ -76,8 +75,7 @@ docker run --rm `
 ```bash
 mkdir -p reports
 docker run --rm \
-  -e IN_DIR=/data \
-  -v "$PWD/balance-sync-logs:/data:ro" \
+  -v "$PWD/balance-sync-logs.zip:/data.zip:ro" \
   -v "$PWD/reports:/out" \
   calo-project
 ```
