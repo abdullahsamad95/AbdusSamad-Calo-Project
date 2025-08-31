@@ -30,8 +30,10 @@ A self-contained tool that parses Calo “balance-sync” logs, detects accounti
 ├─ requirements.txt      # Dependencies (pandas, numpy, openpyxl)
 ├─ Dockerfile            # Docker setup
 ├─ .dockerignore         # Ignore caches/logs in docker build
+├─ .gitignore            # Ignore logs/reports in git
 ├─ README.md             # This file
-└─ balance-sync-logs.zip # Input logs (not committed in repo)
+└─ balance-sync-logs/    # Provided test logs (unzipped .gz files)
+
 ```
 
 ---
@@ -43,29 +45,44 @@ A self-contained tool that parses Calo “balance-sync” logs, detects accounti
 ### 1) Build image
 
 ```bash
-docker build -t calo-reports .
+docker build -t calo-project .
 ```
 
 ### 2) Run container
 
-Put your log file as **`balance-sync-logs.zip`** (a zip containing `.gz` logs) in the repo folder.
+Make sure you have a **folder** named `balance-sync-logs` (unzipped, containing `.gz` log files) in the repo folder.
+
+#### Windows CMD
+```powershell
+mkdir reports
+docker run --rm ^
+  -e IN_DIR=/data ^
+  -v "%cd%\balance-sync-logs:/data:ro" ^
+  -v "%cd%\reports:/out" ^
+  calo-project
+```
 
 #### Windows PowerShell
 ```powershell
 mkdir reports
 docker run --rm `
-  -v "${PWD}\balance-sync-logs.zip:/data.zip:ro" `
+  -e IN_DIR=/data `
+  -v "${PWD}\balance-sync-logs:/data:ro" `
   -v "${PWD}\reports:/out" `
-  calo-reports
+  calo-project
 ```
 
 #### macOS/Linux
 ```bash
 mkdir -p reports
-docker run --rm   -v "$PWD/balance-sync-logs.zip:/data.zip:ro"   -v "$PWD/reports:/out"   calo-reports
+docker run --rm \
+  -e IN_DIR=/data \
+  -v "$PWD/balance-sync-logs:/data:ro" \
+  -v "$PWD/reports:/out" \
+  calo-project
 ```
 
-👉 Output: `./reports/calo_balance_reports.xlsx`
+Output: `./reports/calo_balance_reports.xlsx`
 
 ---
 
@@ -77,12 +94,12 @@ If you prefer without Docker:
 pip install -r requirements.txt
 
 # Windows PowerShell
-$env:IN_DIR="D:\path\to\balance-sync-logs.zip"
+$$env:IN_DIR="D:\path\to\balance-sync-logs"
 $env:OUT_DIR="D:\path\to\reports"
 python main.py
 
 # macOS/Linux
-export IN_DIR=/path/to/balance-sync-logs.zip
+export IN_DIR=/path/to/balance-sync-logs
 export OUT_DIR=/path/to/reports
 python main.py
 ```
